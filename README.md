@@ -1,5 +1,5 @@
 # Ex.No.1---Data-Preprocessing
-## AIM:
+## AIM: 
 
 To perform Data preprocessing in a data set downloaded from Kaggle
 
@@ -32,10 +32,127 @@ Normalizing the data
 Splitting the data into test and train
 
 ## PROGRAM:
-/Write your code here/
+~~~
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("Churn_Modelling.csv")
+df
+
+df.isnull().sum()
+
+df.duplicated()
+
+df.describe()
+
+df['Exited'].describe()
+
+""" Normalize the data - There are range of values in different columns of x are different. 
+
+To get a correct ne plot the data of x between 0 and 1 
+
+LabelEncoder can be used to normalize labels.
+It can also be used to transform non-numerical labels to numerical labels.
+"""
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+
+df1 = df.copy()
+
+df1["Geography"] = le.fit_transform(df1["Geography"])
+df1["Gender"] = le.fit_transform(df1["Gender"])
+
+'''
+MinMaxScaler - Transform features by scaling each feature to a given range. 
+When we normalize the dataset it brings the value of all the features between 0 and 1 so that all the columns are in the same range, and thus there is no dominant feature.'''
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+
+df1[["CreditScore","Geography","Age","Tenure","Balance","NumOfProducts","EstimatedSalary"]] = pd.DataFrame(scaler.fit_transform(df1[["CreditScore","Geography","Age","Tenure","Balance","NumOfProducts","EstimatedSalary"]]))
+
+df1
+
+df1.describe()
+
+# Since values like Row Number, Customer Id and surname  doesn't affect the output y(Exited).
+# So those are not considered in the x values
+X = df1[["CreditScore","Geography","Gender","Age","Tenure","Balance","NumOfProducts","HasCrCard","IsActiveMember","EstimatedSalary"]].values
+print(X)
+
+y = df1.iloc[:,-1].values
+print(y)
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+print(X_train)
+print("Size of X_train: ",len(X_train))
+
+print(X_test)
+print("Size of X_test: ",len(X_test))
+
+X_train.shape
+~~~
 
 ## OUTPUT:
-/ Show the result/
+### Dataset
 
-## RESULT
-/Type your result here/
+![plot](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/dataset.png)
+
+### Checking for null values
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/null.png)
+
+### Checking for duplicate values
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/duplicate.png)
+
+### Describing Data
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/describe.png)
+
+### Checking for outliers in Exited Column
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/outlier.png)
+
+### Normalized Dataset
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/normalized_data.png)
+
+### Describing Normalized Data
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/Normalized_describe.png)
+
+### X - Values
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/x.png)
+
+### Y - Value
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/y.png)
+
+### X_train values
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/x_train.png)
+
+### X_train Size
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/x_train_size.png)
+
+### X_test values
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/x_test.png)
+
+### X_test Size
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/x_test_size.png)
+
+### X_train shape
+
+![](https://github.com/dyanesh-100/Ex.No.1---Data-Preprocessing/blob/main/x_train_shape.png)
+
+## RESULT:
+Data preprocessing is performed in a data set downloaded from Kaggle
